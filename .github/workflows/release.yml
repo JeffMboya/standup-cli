@@ -36,6 +36,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag_name: latest
           name: "Latest (main)"
           prerelease: true
@@ -51,5 +52,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           files: dist/*
           generate_release_notes: true
