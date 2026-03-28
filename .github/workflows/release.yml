@@ -1,0 +1,55 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+
+      - name: Build binaries
+        run: |
+          mkdir -p dist
+          GOOS=linux   GOARCH=amd64  go build -o dist/standup-linux-amd64   .
+          GOOS=linux   GOARCH=arm64  go build -o dist/standup-linux-arm64   .
+          GOOS=darwin  GOARCH=amd64  go build -o dist/standup-darwin-amd64  .
+          GOOS=darwin  GOARCH=arm64  go build -o dist/standup-darwin-arm64  .
+          GOOS=windows GOARCH=amd64  go build -o dist/standup-windows-amd64.exe .
+
+      - name: Create checksums
+        run: cd dist && sha256sum * > checksums.txt
+
+      # On push to main: update the rolling "latest" pre-release
+      - name: Publish latest pre-release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: "Latest (main)"
+          prerelease: true
+          files: dist/*
+          body: |
+            Latest build from `main` — ${{ github.sha }}
+
+            This is a rolling pre-release updated on every push to main.
+            For stable versioned releases, see the [releases page](https://github.com/${{ github.repository }}/releases).
+
+      # On version tag: create a proper versioned release
+      - name: Publish versioned release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
