@@ -47,7 +47,7 @@ Writing a standup update every morning means mentally reconstructing what you ac
 
 ### Option 1 — Download a binary (no Go required)
 
-Go to the [Releases page](https://github.com/yourusername/standup/releases/latest) and download the binary for your platform:
+Go to the [Releases page](https://github.com/JeffMboya/standup-cli/releases/latest) and download the binary for your platform:
 
 | Platform | File |
 |----------|------|
@@ -60,7 +60,7 @@ Go to the [Releases page](https://github.com/yourusername/standup/releases/lates
 **macOS / Linux:**
 ```bash
 # Replace the filename with your platform's binary
-curl -L https://github.com/yourusername/standup/releases/latest/download/standup-darwin-arm64 -o standup
+curl -L https://github.com/JeffMboya/standup-cli/releases/latest/download/standup-darwin-arm64 -o standup
 chmod +x standup
 sudo mv standup /usr/local/bin/
 ```
@@ -70,14 +70,14 @@ sudo mv standup /usr/local/bin/
 ### Option 2 — Install with Go
 
 ```bash
-go install github.com/yourusername/standup@latest
+go install github.com/JeffMboya/standup-cli@latest
 ```
 
 ### Option 3 — Build from source
 
 ```bash
-git clone https://github.com/yourusername/standup
-cd standup
+git clone https://github.com/JeffMboya/standup-cli
+cd standup-cli
 go build -o standup .
 mv standup ~/.local/bin/
 ```
